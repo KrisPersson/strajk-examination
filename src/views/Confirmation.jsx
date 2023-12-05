@@ -9,7 +9,7 @@ function Confirmation() {
     const { state } = useLocation();
 
     return (
-        <section className='confirmation'>
+        <section role='confirmation-view' className='confirmation'>
             <Navigation />
             <Top title="See you soon!" />
             { state ?
@@ -28,7 +28,7 @@ function Confirmation() {
                     disabled="disabled" />
                     <article className='confirmation__price'>
                         <p>Total:</p>
-                        <p>{ state.confirmationDetails.price } sek</p>
+                        <p role='total-price'>{ state.confirmationDetails.price } sek</p>
                     </article>
                     <button className='button confirmation__button'>Sweet, let's go!</button>
                 </form> : <h2 className='confirmation__no-booking'>Inga bokning gjord!</h2>

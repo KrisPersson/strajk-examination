@@ -93,13 +93,13 @@ function Booking() {
     }
 
     return (
-        <section className='booking'>
+        <section role='booking-view' className='booking'>
             <Navigation />
             <Top title="Booking" />
             <BookingInfo updateBookingDetails={ updateBookingDetails } />
             <Shoes updateSize={ updateSize } addShoe={ addShoe }
                     removeShoe={ removeShoe } shoes={ shoes } />
-            <button className="button booking__button" onClick={ book }>strIIIIIike!</button>
+            <button role='place-order-btn' className="button booking__button" onClick={ book }>strIIIIIike!</button>
             { error ? <ErrorMessage /> : '' }
         </section>
     )

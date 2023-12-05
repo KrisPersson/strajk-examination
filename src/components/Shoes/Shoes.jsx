@@ -12,8 +12,11 @@ function Shoes({ updateSize, addShoe, removeShoe, shoes }) {
             <Input label={ label } type='text'
                 customClass='shoes__input'
                 name={ input.id }
-                handleChange={ updateSize } />
-            <button className='shoes__button shoes__button--small' 
+                handleChange={ updateSize }
+                role={'shoe-size-input'}
+                />
+
+            <button role='remove-shoe-input' className='shoes__button shoes__button--small' 
             onClick={ () => { removeShoe(input.id) }}>-</button>
         </article> )
 
@@ -26,7 +29,7 @@ function Shoes({ updateSize, addShoe, removeShoe, shoes }) {
                 <h2 className="shoes__heading">Shoes</h2>
             </header>
             { shoeComps }
-            <button className="shoes__button" onClick={ () => { addShoe(nanoid()) } }>+</button>
+            <button role='add-shoes-btn' className="shoes__button" onClick={ () => { addShoe(nanoid()) } }>+</button>
         </section>
     )
 }
