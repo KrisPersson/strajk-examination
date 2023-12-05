@@ -119,8 +119,8 @@ describe('App', () => {
         const confirmBtn = screen.getByRole('sweet-lets-go-btn')
         fireEvent.click(confirmBtn)
 
-        const noBookingElem = screen.getByRole('no-booking-made')
-        expect(noBookingElem).toBeInTheDocument()
+        const topTitle = screen.getByRole('top-title')
+        expect(topTitle).toHaveTextContent('See you soon!')
         
     })
 

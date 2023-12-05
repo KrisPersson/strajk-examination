@@ -5,7 +5,7 @@ function Top({ title }) {
     return (
         <header className='top'>
             <img src={ logo } className="top__logo" />
-            <h1 className="top__title">{ title }</h1>
+            <h1 role='top-title' className="top__title">{ title }</h1>
         </header>
     )
 }

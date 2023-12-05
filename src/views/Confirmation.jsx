@@ -33,7 +33,7 @@ function Confirmation() {
                         <p role='total-price'>{ state.confirmationDetails.price } sek</p>
                     </article>
                     <button role='sweet-lets-go-btn' className='button confirmation__button'>Sweet, let's go!</button>
-                </form> : <h2 role='no-booking-made' className='confirmation__no-booking'>Inga bokning gjord!</h2>
+                </form> : <h2 role='no-booking-made' className='confirmation__no-booking'>Ingen bokning gjord!</h2>
             }
         </section>
     )
