@@ -9,8 +9,8 @@ const server = setupServer(
             active: true,
             id: "TESTID",
             lanes: "1",
-            people: "1",
-            shoes: ["42"],
+            people: "2",
+            shoes: ["43", "40"],
             when: '2023-12-14T1200',
             price: "220"
         })
@@ -25,7 +25,7 @@ afterAll(() => server.close())
 describe('App', () => {
 
 
-    it('should render a different input for Date, Time, Amt of players, and Amt of lanes', () => {
+    it('should render a unique input for Date, Time, Amt of players, and Amt of lanes', () => {
         render(<App />)
 
         const dateInput = screen.getByRole('when')
@@ -39,7 +39,7 @@ describe('App', () => {
         expect(amtLanesInput).toBeInTheDocument()
     })
 
-    it('should render a button that adds a shoe-size-input when clicked', async () => {
+    it('should render a button that adds a shoe-size input when clicked', async () => {
         render(<App />)
 
         const addShoesBtn = screen.getByRole('add-shoes-btn')
@@ -76,13 +76,16 @@ describe('App', () => {
 
     it('should successfully fill out the form, place an order, and navigate to the Confirmation-view', async () => {
         render(<App />)
+        // Selecting elements
         const dateInput = screen.getByRole('when')
         const timeInput = screen.getByRole('time')
         const amtPlayersInput = screen.getByRole('people')
         const amtLanesInput = screen.getByRole('lanes')
+
         const addShoesBtn = screen.getByRole('add-shoes-btn')
         const placeOrderBtn = screen.getByRole('place-order-btn')
 
+        // Filling out the form and placing order
         fireEvent.change(dateInput, { target: { value: '2023-12-07' } })
         fireEvent.change(timeInput, { target: { value: '19.00' } })
         fireEvent.change(amtPlayersInput, { target: { value: 2 } })
@@ -96,12 +99,29 @@ describe('App', () => {
         fireEvent.change(shoeSizeInputs[1], { target: { value: 43 } })
         fireEvent.click(placeOrderBtn)
 
+        // Testing that confirmation-view renders as expected
+
         await waitFor(() => {
             expect(screen.getByRole('confirmation-view')).toBeInTheDocument()
         })
-        
+
+        const when = screen.getByRole('confirmation-when').value
+        expect(when).toBe('2023-12-14 1200')
+        const who = screen.getByRole('confirmation-who').value
+        expect(who).toBe('2')
+        const lanes = screen.getByRole('confirmation-lanes').value
+        expect(lanes).toBe('1')
+        const bookingNr = screen.getByRole('confirmation-booking-nr').value
+        expect(bookingNr).toBe('TESTID')
         const totalPrice = screen.getByRole('total-price')
         expect(totalPrice.textContent).toBe("220 sek")
+
+        const confirmBtn = screen.getByRole('sweet-lets-go-btn')
+        fireEvent.click(confirmBtn)
+
+        const noBookingElem = screen.getByRole('no-booking-made')
+        expect(noBookingElem).toBeInTheDocument()
+        
     })
 
 })
