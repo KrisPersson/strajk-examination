@@ -10,20 +10,17 @@ const server = setupServer(
             id: "TESTID",
             lanes: "1",
             people: "2",
-            shoes: ["43", "40"],
+            shoes: ["40", "43"],
             when: '2023-12-14T1200',
             price: "220"
         })
     })
 )
 
-
 beforeAll(() => server.listen())
 afterAll(() => server.close())
 
-
 describe('App', () => {
-
 
     it('should render a unique input for Date, Time, Amt of players, and Amt of lanes', () => {
         render(<App />)
@@ -106,15 +103,16 @@ describe('App', () => {
         })
 
         const when = screen.getByRole('confirmation-when').value
-        expect(when).toBe('2023-12-14 1200')
         const who = screen.getByRole('confirmation-who').value
-        expect(who).toBe('2')
         const lanes = screen.getByRole('confirmation-lanes').value
-        expect(lanes).toBe('1')
         const bookingNr = screen.getByRole('confirmation-booking-nr').value
+        const totalPrice = screen.getByRole('total-price').textContent
+
+        expect(when).toBe('2023-12-14 1200')
+        expect(who).toBe('2')
+        expect(lanes).toBe('1')
         expect(bookingNr).toBe('TESTID')
-        const totalPrice = screen.getByRole('total-price')
-        expect(totalPrice.textContent).toBe("220 sek")
+        expect(totalPrice).toBe("220 sek")
 
         const confirmBtn = screen.getByRole('sweet-lets-go-btn')
         fireEvent.click(confirmBtn)
@@ -122,6 +120,20 @@ describe('App', () => {
         const topTitle = screen.getByRole('top-title')
         expect(topTitle).toHaveTextContent('See you soon!')
         
+    })
+
+    it('should render a Menu-btn, which when clicked renders the Menu', () => {
+        render(<App />)
+
+        const menuBtn = screen.getByRole('menu-btn')
+        const navBooking = screen.getByRole('nav-booking')
+
+        expect(menuBtn).toBeInTheDocument()
+        expect(navBooking).toHaveClass('hide')
+
+        fireEvent.click(menuBtn)
+
+        expect(navBooking).not.toHaveClass('hide')
     })
 
 })
