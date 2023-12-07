@@ -3,7 +3,7 @@ Examinationsuppgift YH
 
 ---USER STORIES---
 
-# Som användare vill jag kunna boka datum och tid samt ange antal spelare så att jag kan reservera 1 eller flera banor i bowlinghallen.
+@ Som användare vill jag kunna boka datum och tid samt ange antal spelare så att jag kan reservera 1 eller flera banor i bowlinghallen.
   * Date-input finns
   * Time-input finns
   * Antal spelare-input finns
@@ -24,3 +24,5 @@ Examinationsuppgift YH
   * Om man står i Boknings-vyn och klickar på "Confirmation" så navigeras man till Bekräftelse-vyn.
   * Om man står i Bekräftelse-vyn och klickar på "Booking" så navigeras man till Booking-vyn.
   * Om menyn är öppen, och man klickar på meny-knappen, så stängs menyn.
+
+# Error cases
