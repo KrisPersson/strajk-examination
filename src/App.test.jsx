@@ -2,6 +2,7 @@ import { render, screen, fireEvent, waitFor } from "@testing-library/react"
 import { setupServer } from 'msw/node'
 import { http, HttpResponse } from "msw"
 import App from "./App"
+import { expect } from "vitest"
 
 const server = setupServer(
     http.post('https://h5jbtjv6if.execute-api.eu-north-1.amazonaws.com', () => {
@@ -24,6 +25,8 @@ describe('App', () => {
 
     it('should render a unique input for Date, Time, Amt of players, and Amt of lanes', () => {
         render(<App />)
+
+        expect(screen.getByRole('booking-view')).toBeInTheDocument()
 
         const dateInput = screen.getByRole('when')
         const timeInput = screen.getByRole('time')
@@ -73,6 +76,7 @@ describe('App', () => {
 
     it('should successfully fill out the form, place an order, and navigate to the Confirmation-view', async () => {
         render(<App />)
+
         // Selecting elements
         const dateInput = screen.getByRole('when')
         const timeInput = screen.getByRole('time')
@@ -136,6 +140,69 @@ describe('App', () => {
         fireEvent.click(menuBtn)
 
         expect(navBooking).not.toHaveClass('hide')
+        fireEvent.click(navBooking)
+    })
+
+    it('should navigate between Booking- and Confirmation-view when clicking respective links in the menu', () => {
+        render(<App />)
+
+        expect(screen.getByRole('booking-view')).toBeInTheDocument()
+        const menuBtn = screen.getByRole('menu-btn')
+        fireEvent.click(menuBtn)
+
+        const navConfirmation = screen.getByRole('nav-confirmation')
+
+        fireEvent.click(navConfirmation)
+        expect(screen.getByRole('confirmation-view')).toBeInTheDocument()
+        const navBooking = screen.getByRole('nav-booking')
+
+        fireEvent.click(navBooking)
+        expect(screen.getByRole('booking-view')).toBeInTheDocument()
+    })
+
+    // Error cases
+
+    it('should render an Error message if attempting to place an order without filling in the form', () => {
+        render(<App />)
+
+        expect(screen.queryByRole('error-msg')).not.toBeInTheDocument()
+
+        const placeOrderBtn = screen.getByRole('place-order-btn')
+        fireEvent.click(placeOrderBtn)
+
+        expect(screen.queryByRole('error-msg')).toBeInTheDocument()
+    })
+
+    it('should render an Error message if attempting to place an order with the wrong amount of shoes', () => {
+        render(<App />)
+
+        expect(screen.queryByRole('error-msg')).not.toBeInTheDocument()
+
+        // Selecting elements
+        const dateInput = screen.getByRole('when')
+        const timeInput = screen.getByRole('time')
+        const amtPlayersInput = screen.getByRole('people')
+        const amtLanesInput = screen.getByRole('lanes')
+
+        const addShoesBtn = screen.getByRole('add-shoes-btn')
+        const placeOrderBtn = screen.getByRole('place-order-btn')
+
+        // Filling out the form and placing order
+        fireEvent.change(dateInput, { target: { value: '2023-12-07' } })
+        fireEvent.change(timeInput, { target: { value: '19.00' } })
+        fireEvent.change(amtPlayersInput, { target: { value: 1 } })
+        fireEvent.change(amtLanesInput, { target: { value: 1 } })
+
+        fireEvent.click(addShoesBtn)
+        fireEvent.click(addShoesBtn)
+        const shoeSizeInputs = screen.queryAllByRole('shoe-size-input')
+        
+        fireEvent.change(shoeSizeInputs[0], { target: { value: 40 } })
+        fireEvent.change(shoeSizeInputs[1], { target: { value: 43 } })
+
+        fireEvent.click(placeOrderBtn)
+
+        expect(screen.queryByRole('error-msg')).toBeInTheDocument()
     })
 
 })
