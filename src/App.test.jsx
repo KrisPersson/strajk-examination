@@ -129,6 +129,8 @@ describe('App', () => {
         const navBooking = screen.getByRole('nav-booking')
 
         expect(menuBtn).toBeInTheDocument()
+        expect(navBooking).toBeInTheDocument()
+
         expect(navBooking).toHaveClass('hide')
 
         fireEvent.click(menuBtn)
