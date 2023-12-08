@@ -9,7 +9,6 @@ function Confirmation() {
     const { state } = useLocation();
     const [confirmed, setConfirmed] = useState(false)
     
-
     return (
         <section role='confirmation-view' className='confirmation'>
             <Navigation />
